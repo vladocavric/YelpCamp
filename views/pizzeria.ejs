@@ -1,0 +1,16 @@
+<%- include("partials/header") %>
+<h1>pizzeria</h1>
+<br>
+<br>
+
+
+<% pizzeria.forEach(pizza => { %>
+
+    <span><%= pizza.name %> </span>
+    <br>
+    <img src="<%= pizza.img %> " alt="">
+    <hr>
+ 
+<% }) %>
+
+<%- include("partials/footer") %>
