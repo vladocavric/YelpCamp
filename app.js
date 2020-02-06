@@ -16,12 +16,32 @@ var pizzeria = [
     {name: 'San Francisco', img: 'http://www.sfpizza.rs/images/sf-logo-200-transparent.png'} 
 ]
 
+pizzeria.reverse();
+
+
 app.get('/', function(req, res){
     res.render('Home')
 })
 
 app.get('/pizzeria', function(req, res){
+    
     res.render('pizzeria', {pizzeria: pizzeria})
+})
+
+
+app.post('/pizzeria', function(req, res){
+   var name = req.body.pizzeria
+   var img = req.body.url
+   var newPizzeria = {name: name, img: img}
+   pizzeria.unshift(newPizzeria)
+       
+    // res.send('you are on post rout')
+    res.redirect('pizzeria')
+})
+
+
+app.get('/pizzeria/new', function(req, res){
+    res.render('newpizzeria')
 })
 
 app.get('*', function(req, res){
@@ -30,3 +50,4 @@ app.get('*', function(req, res){
 
 
 app.listen(8012);
+
