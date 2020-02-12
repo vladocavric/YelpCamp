@@ -5,7 +5,6 @@ const Cat = mongoose.model('Cat', {
     name: String,
     age: Number,
     temperment: String
-
 });
 
 // var george = new Cat({
@@ -23,9 +22,34 @@ const Cat = mongoose.model('Cat', {
 //     }
 // });
 
-const kitty = new Cat({
-    name: 'Siva',
-    age: 5,
-    temperment: 'nervozna'
+// const kitty = new Cat({
+//     name: 'narandzasta',
+//     age: 7,
+//     temperment: 'mirna'
+// });
+// kitty.save().then(() => console.log(kitty));
+
+Cat.create({
+    name: 'ljubicasta',
+    age: 6,
+    temperment: 'mila'
+}, function (err, cat) {
+    if(err){
+        console.log(err);
+    }else {
+        console.log(cat);
+        console.log('-----------------------------------------------------------------------------------')
+    }
+
 });
-kitty.save().then(() => console.log('meow'));
+
+Cat.find({}, function (err, cats) {
+    if(err){
+        console.log('oh no error');
+        console.log(err);
+    } else {
+        console.log('all the cats');
+        console.log(cats);
+        console.log('------------------------------------------------------------------------------------')
+    }
+})
