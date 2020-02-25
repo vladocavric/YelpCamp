@@ -4,18 +4,13 @@ const bodyParser = require('body-parser');
 const request = require('request');
 const rp = require('request-promise');
 const mongoose = require('mongoose');
+const pizzeria = require('./models/pizzeria')
 
 mongoose.connect('mongodb://localhost:27017/pizzerias', {useNewUrlParser: true, useUnifiedTopology: true});
 
 app.use(express.static('themes'));
 app.use(bodyParser.urlencoded({extend: true}));
 app.set('view engine', 'ejs');
-
-let pizzeria = mongoose.model('pizzeria', {
-    name: String,
-    img: String,
-    description: String
-});
 
 // pizzeria.create({
 //     name: 'Pizza Hut',
@@ -53,6 +48,7 @@ app.get('/pizzeria', function (req, res) {
             res.render('index', {pizzerias: pizzerias})
         }
     })
+    // res.send('nesto');
 });
 
 app.post('/pizzeria', function (req, res) {
