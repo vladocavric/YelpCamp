@@ -1,0 +1,15 @@
+<%- include("../partials/header") %>
+<%- include("../partials/nav") %>
+<div class="container">
+    <div class="jumbotron">
+        <h1>add comment here for <%= pizzeria.name %></h1>
+    </div>
+    <form action="/pizzeria/<%= pizzeria._id%>/comments" method="post">
+        <input type="text" name="text" id="text">
+        <input type="text" name="author" id="author">
+        <input type="submit" value="submit" class="btn btn-success">
+    </form>
+</div>
+
+
+<%- include("../partials/footer") %>
