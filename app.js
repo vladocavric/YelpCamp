@@ -45,10 +45,8 @@ app.get('/', function (req, res) {
 app.get('/pizzeria', function (req, res) {
     pizzeria.find({}, function (err, pizzerias) {
         if (err) {
-            console.log('oh no error');
             console.log(err);
         } else {
-            console.log('all the pizzas');
             res.render('pizzerias/index', {pizzerias: pizzerias})
         }
     })
@@ -67,7 +65,7 @@ app.post('/pizzeria', function (req, res) {
         if (err) {
             console.log(err);
         } else {
-            console.log(pizzeria);
+            // console.log(pizzeria);
         }
     });
     res.redirect('pizzeria')
@@ -84,7 +82,7 @@ app.get('/pizzeria/:id', function (req, res) {
         if (err) {
             console.log(err);
         } else {
-            console.log(foundPizza)
+            // console.log(foundPizza)
             res.render('pizzerias/show', {pizza: foundPizza})
         }
     })
@@ -103,32 +101,26 @@ app.get('/pizzeria/:id/comments/new', function (req, res) {
 });
 
 app.post('/pizzeria/:id/comments', function (req, res) {
-    const text = req.body.text;
-    // comment.create({
-    //     text: text
-    // }, function (err, comment) {
-    //     if (err) {
-    //         console.log(err);
-    //     } else {
-    //         //console.log(comment);
-    //         pizzeria.findById({}, function(err, pizzaria){
-    //             if (err){
-    //                 console.log(err)
-    //             } else {
-    //                 console.log('found some pizzaria')
-    //                 pizzeria.comments.push(comment);
-    //                 pizzeria.save();
-    //                 console.log('saved a comment');
-    //             }
-    //         }
-    //
-    //         );
-    //
-    //     }
-    // }
-    // );
-    res.redirect('/')
-    // res.redirect('comment')
+     // lookup for pizzeria
+    pizzeria.findById(req.params.id, function (err, pizzeria) {
+        if (err){
+            console.log(err);
+        } else {
+            // console.log(pizzeria.name)
+            comment.create(req.body.comment, function (err, comment) {
+                if (err) {
+                    console.log(err)
+                } else {
+                    // console.log(comment)
+                    pizzeria.comments.push(comment);
+                    pizzeria.save()
+                }
+            })
+        }
+    });
+    // create new comment
+    //connect new comment to pizzaria
+    res.redirect('/pizzeria/' + req.params.id)
 });
 
 app.get('*', function (req, res) {

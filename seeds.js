@@ -30,7 +30,7 @@ function seedDB(){
         if(err){
             console.log(err);
         } else {
-            console.log('remuved all the commetns')
+            // console.log('remuved all the commetns')
         }
 
     });
@@ -38,14 +38,14 @@ function seedDB(){
         if(err){
             console.log(err);
         } else {
-            console.log('remove compgrounds');
+            // console.log('remove compgrounds');
             //add a few pizzerias
             data.forEach(seed =>
                 pizzeria.create(seed, function (err, pizzeria) {
                     if(err){
                         console.log(err);
                     }else {
-                        console.log('added pizzaria');
+                        // console.log('added pizzaria');
                         commetn.create({
                             text: 'This place is grat, but I wish there is a pasta on menu',
                             author: 'Homer'
@@ -53,10 +53,10 @@ function seedDB(){
                             if(err){
                                 console.log(err);
                             } else {
-                                console.log(comment);
+                                // console.log(comment);
                                 pizzeria.comments.push(comment);
                                 pizzeria.save();
-                                console.log('saved a comment');
+                                // console.log('saved a comment');
 
                             }
                         })
