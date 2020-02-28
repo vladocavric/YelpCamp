@@ -114,13 +114,14 @@ app.post('/pizzeria/:id/comments', function (req, res) {
                     // console.log(comment)
                     pizzeria.comments.push(comment);
                     pizzeria.save()
+                    res.redirect('/pizzeria/' + req.params.id)
                 }
             })
         }
     });
     // create new comment
     //connect new comment to pizzaria
-    res.redirect('/pizzeria/' + req.params.id)
+
 });
 
 app.get('*', function (req, res) {
