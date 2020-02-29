@@ -64,7 +64,7 @@ app.post('/pizzeria', function (req, res) {
         img: img,
         description: description
     }, function (err, pizzeria) {
-        if(err){
+        if (err) {
             console.log(err);
         } else {
             console.log(pizzeria);
