@@ -1,0 +1,24 @@
+<%- include("../partials/header") %>
+<%- include("../partials/nav") %>
+<div class="container mt-5">
+    <h1 class="text-center"><%= pizza.name%></h1>
+    <div class="text-center" ><img style="max-width: 500px" src="<%= pizza.img%>" alt=""></div>
+    <p class="mb-5"><%= pizza.description%></p>
+    <div class="d-flex justify-content-between">
+        <a href="/pizzeria/<%= pizza._id%>/comments/new" class="btn btn-success">add comment</a>
+        <a href="/pizzeria" class="btn btn-warning">go back</a>
+
+    </div>
+    <div class="bg-light my-3 border border-warning rounded">
+<% pizza.comments.forEach(comment => { %>
+        <div class="border-bottom p-3">
+            <p><%= comment.text %>  </p>
+            <p class="ml-5"><strong><%= comment.author %></strong></p>
+        </div>
+
+    <% }) %>
+        </div>
+</div>
+
+
+<%- include("../partials/footer") %>
