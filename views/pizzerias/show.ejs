@@ -1,23 +1,155 @@
 <%- include("../partials/header") %>
 <%- include("../partials/nav") %>
 <div class="container mt-5">
-    <h1 class="text-center"><%= pizza.name%></h1>
-    <div class="text-center" ><img style="max-width: 500px" src="<%= pizza.img%>" alt=""></div>
-    <p class="mb-5"><%= pizza.description%></p>
-    <div class="d-flex justify-content-between">
-        <a href="/pizzeria/<%= pizza._id%>/comments/new" class="btn btn-success">add comment</a>
-        <a href="/pizzeria" class="btn btn-warning">go back</a>
+    <div class="row flex-row-reverse flex-lg-row">
+        <div class="col-12 col-lg-4">
+            <ul class="list-group mb-5">
+                <li class="list-group-item list-group-item-action active">Cras justo odio</li>
+                <li class="list-group-item list-group-item-action">Dapibus ac facilisis in</li>
+                <li class="list-group-item list-group-item-action">Morbi leo risus</li>
+                <li class="list-group-item list-group-item-action">Porta ac consectetur ac</li>
+                <li class="list-group-item list-group-item-action">Vestibulum at eros</li>
+            </ul>
+            <div>
+                <iframe src="<%= pizza.map %>" width="100%" height="300px" frameborder="0"></iframe>
+            </div>
+        </div>
+        <div class="-12 col-lg-8">
+            <img class="w-100" src="<%= pizza.img %>" alt="">
 
+            <div class="d-flex my-3 justify-content-between">
+                <a class="h4" href="<%= pizza.site %>" target="_blank"><%= pizza.name %></a>
+                <span class="h4">$<%= pizza.price %>/slice</span>
+            </div>
+
+            <p class="mb-3"><%= pizza.description %></p>
+
+            <div class="d-flex justify-content-between mb-5 text-danger">
+                <div>
+                    <%= pizza.comments.length %>
+                    <% if (pizza.comments.length === 1) { %>
+                        <span> reviev </span>
+                    <% } else { %>
+                        <span>revievs</span>
+                    <% } %>
+                </div>
+                <div class="average-rating">
+                    <% let noOfComments = pizza.comments.length; %>
+                    <% var total = 0; %>
+                    <% if (noOfComments === 0) { %>
+                        Be the first to review the pizzeria
+                    <% }else{ %>
+                        <% for (var i = 0; i < pizza.comments.length; i++){ %>
+                            <% total += pizza.comments[i].rating; %>
+                        <% } %>
+                        <% let average = (total / noOfComments).toFixed(1) %>
+
+                        <% if (average <= 1.2) { %>
+                            <i class="fa fa-star" aria-hidden="true"></i>
+                            <i class="fa fa-star-o" aria-hidden="true"></i>
+                            <i class="fa fa-star-o" aria-hidden="true"></i>
+                            <i class="fa fa-star-o" aria-hidden="true"></i>
+                            <i class="fa fa-star-o" aria-hidden="true"></i>
+                        <% } else if(average >= 1.2 && average < 1.8) { %>
+                            <i class="fa fa-star" aria-hidden="true"></i>
+                            <i class="fa fa-star-half-o" aria-hidden="true"></i>
+                            <i class="fa fa-star-o" aria-hidden="true"></i>
+                            <i class="fa fa-star-o" aria-hidden="true"></i>
+                            <i class="fa fa-star-o" aria-hidden="true"></i>
+                        <% } else if(average >= 1.8 && average < 2.2) { %>
+                            <i class="fa fa-star" aria-hidden="true"></i>
+                            <i class="fa fa-star" aria-hidden="true"></i>
+                            <i class="fa fa-star-o" aria-hidden="true"></i>
+                            <i class="fa fa-star-o" aria-hidden="true"></i>
+                            <i class="fa fa-star-o" aria-hidden="true"></i>
+                        <% } else if(average >= 2.2 && average < 2.7) { %>
+                            <i class="fa fa-star" aria-hidden="true"></i>
+                            <i class="fa fa-star" aria-hidden="true"></i>
+                            <i class="fa fa-star-half-o" aria-hidden="true"></i>
+                            <i class="fa fa-star-o" aria-hidden="true"></i>
+                            <i class="fa fa-star-o" aria-hidden="true"></i>
+                        <% } else if(average >= 2.7 && average < 3.2) { %>
+                            <i class="fa fa-star" aria-hidden="true"></i>
+                            <i class="fa fa-star" aria-hidden="true"></i>
+                            <i class="fa fa-star" aria-hidden="true"></i>
+                            <i class="fa fa-star-o" aria-hidden="true"></i>
+                            <i class="fa fa-star-o" aria-hidden="true"></i>
+                        <% } else if(average >= 3.2 && average < 3.7) { %>
+                            <i class="fa fa-star" aria-hidden="true"></i>
+                            <i class="fa fa-star" aria-hidden="true"></i>
+                            <i class="fa fa-star" aria-hidden="true"></i>
+                            <i class="fa fa-star-half-o" aria-hidden="true"></i>
+                            <i class="fa fa-star-o" aria-hidden="true"></i>
+                        <% } else if(average >= 3.7 && average < 4.2) { %>
+                            <i class="fa fa-star" aria-hidden="true"></i>
+                            <i class="fa fa-star" aria-hidden="true"></i>
+                            <i class="fa fa-star" aria-hidden="true"></i>
+                            <i class="fa fa-star" aria-hidden="true"></i>
+                            <i class="fa fa-star-o" aria-hidden="true"></i>
+                        <% } else if(average >= 4.2 && average < 4.7) { %>
+                            <i class="fa fa-star" aria-hidden="true"></i>
+                            <i class="fa fa-star" aria-hidden="true"></i>
+                            <i class="fa fa-star" aria-hidden="true"></i>
+                            <i class="fa fa-star" aria-hidden="true"></i>
+                            <i class="fa fa-star-half-o" aria-hidden="true"></i>
+                        <% } else  { %>
+                            <i class="fa fa-star" aria-hidden="true"></i>
+                            <i class="fa fa-star" aria-hidden="true"></i>
+                            <i class="fa fa-star" aria-hidden="true"></i>
+                            <i class="fa fa-star" aria-hidden="true"></i>
+                            <i class="fa fa-star" aria-hidden="true"></i>
+                        <% } %>
+                        <%= average %>
+                        <% if(average === 1){ %>
+                            star
+                        <% } else { %>
+                            stars
+                        <% } %>
+                    <% } %>
+
+                </div>
+            </div>
+
+            <div class="d-flex justify-content-between">
+                <a href="/pizzeria/<%= pizza._id %>/comments/new" class="btn btn-success">Leave a Review</a>
+                <a href="/pizzeria" class="btn btn-warning">go back</a>
+            </div>
+            <div class="bg-light my-3 border border-warning rounded">
+                <% pizza.comments.forEach(comment => { %>
+                    <div class="border-bottom p-3">
+                        <p><%= comment.text %>  </p>
+                        <div class="d-flex justify-content-between">
+
+                            <span class="ml-5"><strong><%= comment.author %> </strong></span>
+                            <span class="text-warning ml-5">
+                                <% if (comment.rating === 1) { %>
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                <% } else if (comment.rating === 2){ %>
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                <% } else if (comment.rating === 3){ %>
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                <% } else if (comment.rating === 4){ %>
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                <% } else if (comment.rating === 5){ %>
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                    <i class="fa fa-star" aria-hidden="true"></i>
+                                <% } %>
+                            </span>
+                        </div>
+                    </div>
+                <% }) %>
+            </div>
+        </div>
     </div>
-    <div class="bg-light my-3 border border-warning rounded">
-<% pizza.comments.forEach(comment => { %>
-        <div class="border-bottom p-3">
-            <p><%= comment.text %>  </p>
-            <p class="ml-5"><strong><%= comment.author %></strong></p>
-        </div>
-
-    <% }) %>
-        </div>
 </div>
 
 
