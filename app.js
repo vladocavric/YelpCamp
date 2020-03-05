@@ -72,10 +72,7 @@ app.get('/pizzeria/new', isLoggedIn, function (req, res) {
     res.render('pizzerias/new')
 });
 
-
 app.get('/pizzeria/:id', isLoggedIn, function (req, res) {
-
-app.get('/pizzeria/:id', function (req, res) {
     pizzeria.findById(req.params.id).populate('comments').exec(function (err, foundPizza) {
         if (err) {
             console.log(err);
