@@ -1,0 +1,17 @@
+<%- include("partials/header") %>
+<%- include("partials/nav") %>
+
+<div class="container my-5">
+    <h3>Sign Up</h3>
+    <form action="/sign-up" method="post">
+
+        <input class="col-12 mb-5 form-control-lg" type="text" name="username" id="username" placeholder="username">
+        <input class="col-12 mb-3 p-3 form-control-lg" type="password" name="password" id="password"
+               placeholder="password">
+        <div class="d-flex justify-content-end">
+            <input class="btn btn-outline-success btn-lg " type="submit" value="submit">
+        </div>
+    </form>
+</div>
+
+<%- include("partials/footer") %>

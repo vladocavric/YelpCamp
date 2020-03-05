@@ -7,42 +7,43 @@ const mongoose = require('mongoose');
 const pizzeria = require('./models/pizzeria');
 const comment = require('./models/comment')
 const seedDB = require('./seeds');
+const passport = require('passport');
+const User = require('./models/user');
+const LocalStrategy = require('passport-local');
+const passportLocalMongoose = require('passport-local-mongoose');
+const expressSession = require('express-session');
 
 mongoose.connect('mongodb://localhost:27017/pizzerias', {useNewUrlParser: true, useUnifiedTopology: true});
+
+app.use(expressSession({
+    secret: 'koji sam ja meni kralj',
+    resave: false,
+    saveUninitialized: false
+}));
 
 seedDB();
 
 app.use(express.static('themes'));
-app.use(bodyParser.urlencoded({extend: true}));
+app.use(express.urlencoded({ extended: true }));
 app.set('view engine', 'ejs');
 
-// pizzeria.create({
-//     name: 'Pizza Hut',
-//     img: 'https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.visitgalax.com%2Fproject%2Fpizza-hut%2F&psig=AOvVaw0JccEcr5G4wVtduxpeviTe&ust=1581673896807000&source=images&cd=vfe&ved=0CAIQjRxqFwoTCJiJ4cigzucCFQAAAAAdAAAAABAD'
-// }, function (err, pizzeria) {
-//     if(err){
-//         console.log(err);
-//         console.log('something went wrong');
-//     } else {
-//         console.log('new pizzaria')
-//     }
-// });
+app.use(passport.initialize());
+app.use(passport.session());
 
-// let pizzeria = [
-//     {name: 'Panter', img: 'https://panterns.com/wp-content/uploads/2017/02/cropped-logo-1-1.png'},
-//     {name: 'BigPizza', img: 'https://bigpizza.rs/images/logo.png'},
-//     {name: 'laTorcia', img: 'https://cafferestoranlatorcia.com/images/logo.png'},
-//     {name: 'Ciao', img: 'http://pizzeriaciao.rs/media/1118/pizzeria_ciao_logo.svg'},
-//     {name: 'San Francisco', img: 'http://www.sfpizza.rs/images/sf-logo-200-transparent.png'}
-// ];
+passport.use(new LocalStrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
 
-// pizzeria.reverse();
+//===================
+// ROUTHS
+//====================
+
 
 app.get('/', function (req, res) {
     res.render('Home')
 });
 
-app.get('/pizzeria', function (req, res) {
+app.get('/pizzeria', isLoggedIn, function (req, res) {
     pizzeria.find({}, function (err, pizzerias) {
         if (err) {
             console.log(err);
@@ -71,12 +72,12 @@ app.post('/pizzeria', function (req, res) {
     res.redirect('pizzeria')
 });
 
-app.get('/pizzeria/new', function (req, res) {
+app.get('/pizzeria/new', isLoggedIn, function (req, res) {
     res.render('pizzerias/new')
 });
 
 
-app.get('/pizzeria/:id', function (req, res) {
+app.get('/pizzeria/:id', isLoggedIn, function (req, res) {
 
     pizzeria.findById(req.params.id).populate('comments').exec(function (err, foundPizza) {
         if (err) {
@@ -90,7 +91,7 @@ app.get('/pizzeria/:id', function (req, res) {
 
 // COMMENTS
 
-app.get('/pizzeria/:id/comments/new', function (req, res) {
+app.get('/pizzeria/:id/comments/new', isLoggedIn, function (req, res) {
     pizzeria.findById(req.params.id, function (err, pizzeria) {
         if (err) {
             console.log(err)
@@ -119,14 +120,58 @@ app.post('/pizzeria/:id/comments', function (req, res) {
             })
         }
     });
-    // create new comment
-    //connect new comment to pizzaria
+ });
 
+//=================
+// AUTH ROUTES
+//=================
+
+app.get('/sign-up', function (req, res) {
+    res.render('signup')
 });
+
+app.post('/sign-up', function (req, res) {
+    User.register(new User({username: req.body.username}), req.body.password, function (err, user) {
+        if (err) {
+            console.log(err);
+            return res.render('signup');
+        } else {
+            // res.redirect('/');
+            passport.authenticate('local')(req, res, function () {
+                res.redirect('/pizzeria')
+            })
+        }
+    });
+});
+
+app.get('/log-in', function (req, res) {
+    res.render('login')
+});
+
+app.post('/log-in', passport.authenticate('local', {
+    successRedirect: '/pizzeria/new',
+    failureRedirect: '/log-in'
+}), function (req, res) {
+    // res.send('login post routh')
+});
+
+app.get('/log-out', function (req, res) {
+    // res.send('ok, i will log you out. not yet though...')
+    req.logout();
+    res.redirect('/')
+});
+//======================================
 
 app.get('*', function (req, res) {
     res.send('404');
 });
+
+function isLoggedIn(req, res, next){
+    if(req.isAuthenticated()){
+        return next();
+    }
+    res.redirect('/log-in')
+}
 
 
 app.listen(8015);

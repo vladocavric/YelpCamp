@@ -26,7 +26,7 @@ let data = [
 
 function seedDB(){
     //remuve all pizzerias
-    commetn.remove({}, function (err) {
+    commetn.deleteMany({}, function (err) {
         if(err){
             console.log(err);
         } else {
@@ -34,7 +34,7 @@ function seedDB(){
         }
 
     });
-    pizzeria.remove({}, function (err) {
+    pizzeria.deleteMany({}, function (err) {
         if(err){
             console.log(err);
         } else {
