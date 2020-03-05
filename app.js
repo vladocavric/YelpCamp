@@ -55,14 +55,10 @@ app.get('/pizzeria', isLoggedIn, function (req, res) {
 });
 
 app.post('/pizzeria', function (req, res) {
-    const name = req.body.pizzeria;
-    const img = req.body.url;
-    const description = req.body.description;
-    pizzeria.create({
-        name: name,
-        img: img,
-        description: description
-    }, function (err, pizzeria) {
+    // const name = req.body.pizzeria;
+    // const img = req.body.url;
+    // const description = req.body.description;
+    pizzeria.create(req.body.pizzeria, function (err, pizzeria) {
         if (err) {
             console.log(err);
         } else {
@@ -79,6 +75,7 @@ app.get('/pizzeria/new', isLoggedIn, function (req, res) {
 
 app.get('/pizzeria/:id', isLoggedIn, function (req, res) {
 
+app.get('/pizzeria/:id', function (req, res) {
     pizzeria.findById(req.params.id).populate('comments').exec(function (err, foundPizza) {
         if (err) {
             console.log(err);
@@ -102,9 +99,9 @@ app.get('/pizzeria/:id/comments/new', isLoggedIn, function (req, res) {
 });
 
 app.post('/pizzeria/:id/comments', function (req, res) {
-     // lookup for pizzeria
+    // lookup for pizzeria
     pizzeria.findById(req.params.id, function (err, pizzeria) {
-        if (err){
+        if (err) {
             console.log(err);
         } else {
             // console.log(pizzeria.name)

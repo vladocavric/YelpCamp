@@ -1,8 +1,12 @@
 <form action="/pizzeria" method="post">
-    
-    <input class="col-12 mb-5 form-control-lg" type="text" name="pizzeria" id="pizzeria" placeholder="name of the pizzeria">
-    <input class="col-12 mb-3 p-3 form-control-lg" type="text" name="url" id="url" placeholder="picture url">
-    <textarea class="col-12 mb-3 p-3 form-control-lg" name="description" id="description" placeholder="description" style="min-height: 100px"></textarea>
+
+    <input class="col-12 mb-5 form-control-lg" type="text" name="pizzeria[name]" id="pizzeria"
+           placeholder="name of the pizzeria">
+    <input class="col-12 mb-3 p-3 form-control-lg" type="text" name="pizzeria[img]" id="url" placeholder="picture url">
+    <input class="col-12 mb-3 p-3 form-control-lg" type="text" name="pizzeria[site]" id="site" placeholder="site url">
+    <input class="col-12 mb-3 p-3 form-control-lg" type="text" name="pizzeria[map]" id="map" placeholder="map url">
+    <input class="col-12 mb-3 p-3 form-control-lg" type="number" step="any" name="pizzeria[price]" id="price" placeholder="Price">
+    <textarea class="col-12 mb-3 p-3 form-control-lg h-100 " name="pizzeria[description]" placeholder="description"></textarea>
     <div class="d-flex justify-content-end">
 
         <input class="btn btn-outline-success btn-lg " type="submit" value="submit">
