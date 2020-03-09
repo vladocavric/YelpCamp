@@ -4,14 +4,14 @@ const bodyParser = require('body-parser');
 const request = require('request');
 const rp = require('request-promise');
 const mongoose = require('mongoose');
-const pizzeria = require('./models/pizzeria');
-const comment = require('./models/comment')
-const seedDB = require('./seeds');
 const passport = require('passport');
-const User = require('./models/user');
 const LocalStrategy = require('passport-local');
 const passportLocalMongoose = require('passport-local-mongoose');
 const expressSession = require('express-session');
+const pizzeria = require('./models/pizzeria');
+const comment = require('./models/comment')
+const User = require('./models/user');
+const seedDB = require('./seeds');
 
 mongoose.connect('mongodb://localhost:27017/pizzerias', {useNewUrlParser: true, useUnifiedTopology: true});
 
@@ -43,7 +43,7 @@ app.get('/', function (req, res) {
     res.render('Home')
 });
 
-app.get('/pizzeria', isLoggedIn, function (req, res) {
+app.get('/pizzeria', function (req, res) {
     pizzeria.find({}, function (err, pizzerias) {
         if (err) {
             console.log(err);
@@ -54,7 +54,7 @@ app.get('/pizzeria', isLoggedIn, function (req, res) {
     // res.send('nesto');
 });
 
-app.post('/pizzeria', function (req, res) {
+app.post('/pizzeria', isLoggedIn, function (req, res) {
     // const name = req.body.pizzeria;
     // const img = req.body.url;
     // const description = req.body.description;
@@ -72,7 +72,7 @@ app.get('/pizzeria/new', isLoggedIn, function (req, res) {
     res.render('pizzerias/new')
 });
 
-app.get('/pizzeria/:id', isLoggedIn, function (req, res) {
+app.get('/pizzeria/:id', function (req, res) {
     pizzeria.findById(req.params.id).populate('comments').exec(function (err, foundPizza) {
         if (err) {
             console.log(err);
@@ -95,7 +95,7 @@ app.get('/pizzeria/:id/comments/new', isLoggedIn, function (req, res) {
     })
 });
 
-app.post('/pizzeria/:id/comments', function (req, res) {
+app.post('/pizzeria/:id/comments', isLoggedIn, function (req, res) {
     // lookup for pizzeria
     pizzeria.findById(req.params.id, function (err, pizzeria) {
         if (err) {
@@ -125,7 +125,8 @@ app.get('/sign-up', function (req, res) {
 });
 
 app.post('/sign-up', function (req, res) {
-    User.register(new User({username: req.body.username}), req.body.password, function (err, user) {
+    let newUser = new User({username: req.body.username});
+    User.register(newUser, req.body.password, function (err, user) {
         if (err) {
             console.log(err);
             return res.render('signup');
@@ -168,4 +169,4 @@ function isLoggedIn(req, res, next){
 }
 
 
-app.listen(8015);
+app.listen(5015);
