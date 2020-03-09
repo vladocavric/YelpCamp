@@ -34,6 +34,11 @@ passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
+app.use(function (req, res, next) {
+    res.locals.user = req.user;
+    next();
+});
+
 //===================
 // ROUTHS
 //====================
@@ -43,7 +48,7 @@ app.get('/', function (req, res) {
     res.render('Home')
 });
 
-app.get('/pizzeria', isLoggedIn, function (req, res) {
+app.get('/pizzeria', function (req, res) {
     pizzeria.find({}, function (err, pizzerias) {
         if (err) {
             console.log(err);
@@ -54,7 +59,7 @@ app.get('/pizzeria', isLoggedIn, function (req, res) {
     // res.send('nesto');
 });
 
-app.post('/pizzeria', function (req, res) {
+app.post('/pizzeria', isLoggedIn, function (req, res) {
     // const name = req.body.pizzeria;
     // const img = req.body.url;
     // const description = req.body.description;
@@ -72,7 +77,7 @@ app.get('/pizzeria/new', isLoggedIn, function (req, res) {
     res.render('pizzerias/new')
 });
 
-app.get('/pizzeria/:id', isLoggedIn, function (req, res) {
+app.get('/pizzeria/:id', function (req, res) {
     pizzeria.findById(req.params.id).populate('comments').exec(function (err, foundPizza) {
         if (err) {
             console.log(err);
@@ -108,7 +113,7 @@ app.post('/pizzeria/:id/comments', function (req, res) {
                 } else {
                     // console.log(comment)
                     pizzeria.comments.push(comment);
-                    pizzeria.save()
+                    pizzeria.save();
                     res.redirect('/pizzeria/' + req.params.id)
                 }
             })

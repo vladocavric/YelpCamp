@@ -111,7 +111,9 @@
             </div>
 
             <div class="d-flex justify-content-between">
-                <a href="/pizzeria/<%= pizza._id %>/comments/new" class="btn btn-success">Leave a Review</a>
+                <% if (user){ %>
+                    <a href="/pizzeria/<%= pizza._id %>/comments/new" class="btn btn-success">Leave a Review</a>
+                <% } %>
                 <a href="/pizzeria" class="btn btn-warning">go back</a>
             </div>
             <div class="bg-light my-3 border border-warning rounded">
