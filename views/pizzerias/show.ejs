@@ -23,6 +23,7 @@
             </div>
 
             <p class="mb-3"><%= pizza.description %></p>
+            <p class="mb-3"><em>Submited by <%= pizza.author.username %></em></p>
 
             <div class="d-flex justify-content-between mb-5 text-danger">
                 <div>
@@ -122,7 +123,7 @@
                         <p><%= comment.text %>  </p>
                         <div class="d-flex justify-content-between">
 
-                            <span class="ml-5"><strong><%= comment.author %> </strong></span>
+                            <span class="ml-5"><strong><%= comment.author.username %> </strong></span>
                             <span class="text-warning ml-5">
                                 <% if (comment.rating === 1) { %>
                                     <i class="fa fa-star" aria-hidden="true"></i>
@@ -153,6 +154,5 @@
         </div>
     </div>
 </div>
-
 
 <%- include("../partials/footer") %>

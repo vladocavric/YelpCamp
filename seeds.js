@@ -52,31 +52,31 @@ function seedDB() {
         } else {
             // console.log('remove compgrounds');
             //add a few pizzerias
-            data.forEach(seed =>
-                pizzeria.create(seed, function (err, pizzeria) {
-                    if (err) {
-                        console.log(err);
-                    } else {
-                        // console.log('added pizzaria');
-                        commetn.create({
-                            text: 'This place is grat, but I wish there is a pasta on menu',
-                            rating: 4,
-                            author: 'Homer'
-                        }, function (err, comment) {
-                            if (err) {
-                                console.log(err);
-                            } else {
-                                // console.log(comment);
-                                pizzeria.comments.push(comment);
-                                pizzeria.save();
-                                // console.log('saved a comment');
-
-                            }
-                        })
-                    }
-
-                })
-            );
+            // data.forEach(seed =>
+            //     pizzeria.create(seed, function (err, pizzeria) {
+            //         if (err) {
+            //             console.log(err);
+            //         } else {
+            //             // console.log('added pizzaria');
+            //             commetn.create({
+            //                 text: 'This place is grat, but I wish there is a pasta on menu',
+            //                 rating: 4,
+            //                 author: 'Homer'
+            //             }, function (err, comment) {
+            //                 if (err) {
+            //                     console.log(err);
+            //                 } else {
+            //                     // console.log(comment);
+            //                     pizzeria.comments.push(comment);
+            //                     pizzeria.save();
+            //                     // console.log('saved a comment');
+            //
+            //                 }
+            //             })
+            //         }
+            //
+            //     })
+            // );
         }
     });
 }
