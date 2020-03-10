@@ -38,7 +38,7 @@ router.get('/log-in', function (req, res) {
 });
 
 router.post('/log-in', passport.authenticate('local', {
-    successRedirect: '/pizzeria/new',
+    successRedirect: '/pizzeria',
     failureRedirect: '/log-in'
 }), function (req, res) {
     // res.send('login post routh')

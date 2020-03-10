@@ -21,7 +21,7 @@ const indexRoutes = require('./routes/index');
 const pizzeriaRoutes = require('./routes/pizzerias');
 const commentRoutes = require('./routes/comments');
 
-mongoose.connect('mongodb://localhost:27017/pizzerias', {useNewUrlParser: true, useUnifiedTopology: true});
+mongoose.connect('mongodb://localhost:27017/pizzerias', {useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false});
 
 app.use(expressSession({
     secret: 'koji sam ja meni kralj',

@@ -1,0 +1,28 @@
+<%- include("../partials/header") %>
+<%- include("../partials/nav") %>
+<div class="container">
+    <div class="jumbotron">
+        <h1>Edit page for the pizzeria <%= pizza.name %></h1>
+    </div>
+    <form action="/pizzeria/<%= pizza._id %>?_method=PUT" method="post">
+
+        <input class="col-12 mb-5 form-control-lg" type="text" name="pizzeria[name]" id="pizzeria"
+               placeholder="name of the pizzeria" value="<%= pizza.name %>">
+        <input class="col-12 mb-3 p-3 form-control-lg" type="text" name="pizzeria[img]" id="url"
+               placeholder="picture url" value="<%= pizza.img %>">
+        <input class="col-12 mb-3 p-3 form-control-lg" type="text" name="pizzeria[site]" id="site"
+               placeholder="site url" value="<%= pizza.site %>">
+        <input class="col-12 mb-3 p-3 form-control-lg" type="text" name="pizzeria[map]" id="map" placeholder="map url"
+               value="<%= pizza.map %>">
+        <input class="col-12 mb-3 p-3 form-control-lg" type="number" step="any" name="pizzeria[price]" id="price"
+               placeholder="Price" value="<%= pizza.price %>">
+        <textarea class="col-12 mb-3 p-3 form-control-lg h-100 " name="pizzeria[description]"
+                  placeholder="description"><%= pizza.description %></textarea>
+        <div class="d-flex justify-content-end">
+
+            <input class="btn btn-outline-success btn-lg " type="submit" value="submit">
+        </div>
+
+    </form>
+</div>
+<%- include("../partials/footer") %>

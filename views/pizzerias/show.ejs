@@ -23,7 +23,18 @@
             </div>
 
             <p class="mb-3"><%= pizza.description %></p>
-            <p class="mb-3"><em>Submited by <%= pizza.author.username %></em></p>
+            <div class="d-flex justify-content-between">
+
+                <p class="mb-3"><em>Submited by <b><%= pizza.author.username %></b></em></p>
+                <% if (user.id = pizza.author.id) {%>
+                <div class="d-flex">
+                    <form action="/pizzeria/<%= pizza._id %>?_method=DELETE" method="post"">
+                        <button class="btn btn-danger mx-2">Delete </button>
+                    </form>
+                    <a href="/pizzeria/<%= pizza._id %>/edit" class="btn btn-primary">Edit</a>
+                </div>
+                <% } %>
+            </div>
 
             <div class="d-flex justify-content-between mb-5 text-danger">
                 <div>

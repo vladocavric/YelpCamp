@@ -2,6 +2,12 @@ const express = require('express');
 const router = express.Router({mergeParams: true});
 const pizzeria = require('../models/pizzeria');
 const User = require('../models/user');
+const methodOverride = require('method-override');
+const expressSanitizer = require('express-sanitizer');
+//=================================================================
+router.use(methodOverride('_method'));
+router.use(expressSanitizer());
+//================================================================
 
 // index route
 router.get('/', function (req, res) {
@@ -14,7 +20,15 @@ router.get('/', function (req, res) {
     })
     // res.send('nesto');
 });
+//===============================================================
 
+// new route
+router.get('/new', isLoggedIn, function (req, res) {
+    res.render('pizzerias/new')
+});
+//=================================================================
+
+//create
 router.post('/', isLoggedIn, function (req, res) {
     let newPizzeria = {
         name: req.body.pizzeria.name,
@@ -28,24 +42,18 @@ router.post('/', isLoggedIn, function (req, res) {
             username: req.user.username
         }
     };
-            pizzeria.create(newPizzeria, function (err, pizzeria) {
-                if (err) {
-                    console.log(err);
-                } else {
-                    console.log(pizzeria);
-                    pizzeria.author.id = req.user.id;
-                    pizzeria.author.username = req.user.username;
-                }
-            });
-
-
+    pizzeria.create(newPizzeria, function (err, pizzeria) {
+        if (err) {
+            console.log(err);
+        } else {
+            console.log(pizzeria);
+            pizzeria.author.id = req.user.id;
+            pizzeria.author.username = req.user.username;
+        }
+    });
     res.redirect('/')
 });
-
-// new route
-router.get('/new', isLoggedIn, function (req, res) {
-    res.render('pizzerias/new')
-});
+//============================================================
 
 // show route
 router.get('/:id', function (req, res) {
@@ -58,6 +66,46 @@ router.get('/:id', function (req, res) {
         }
     })
 });
+//===============================================================================================
+
+// edit route
+router.get('/:id/edit', isLoggedIn, function (req, res) {
+    pizzeria.findById(req.params.id, function (err, pizza) {
+        if (err) {
+            console.log(err);
+        } else {
+            // console.log(foundPizza)
+            res.render('pizzerias/edit', {pizza: pizza})
+        }
+    })
+});
+//===============================================================================================
+
+// update route
+router.put('/:id', function (req, res) {
+    req.body.pizzeria.body = req.sanitize(req.body.pizzeria.body);
+    pizzeria.findByIdAndUpdate(req.params.id, req.body.pizzeria, function (err, blog) {
+        if (err) {
+            console.log(err);
+        } else {
+            res.redirect('/pizzeria/' + req.params.id);
+        }
+    })
+});
+//===============================================================================================
+
+// destroy route
+router.delete('/:id', function (req, res) {
+    pizzeria.findByIdAndDelete(req.params.id, function (err) {
+        if (err) {
+            console.log(err)
+        } else {
+            res.redirect('/pizzeria');
+        }
+    })
+});
+
+//===============================================================================================
 
 function isLoggedIn(req, res, next) {
     if (req.isAuthenticated()) {
