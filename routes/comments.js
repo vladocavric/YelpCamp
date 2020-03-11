@@ -41,11 +41,13 @@ router.post('/', isLoggedIn, function (req, res) {
                     console.log(req.user);
                     pizzeria.comments.push(comment);
                     pizzeria.save();
+                    comment.pizzeria = req.params.id;
                     comment.author.id = req.user.id;
                     comment.author.username = req.user.username;
 
                     // user.comments.push(comment);
                     comment.save();
+                    console.log(comment)
                     res.redirect('/pizzeria/' + req.params.id)
                 }
                 // })
@@ -58,6 +60,7 @@ router.post('/', isLoggedIn, function (req, res) {
 
 // edit route
 router.get('/:id/edit', isLoggedIn, function (req, res) {
+    // console.log(req.body.comment);
     comment.findById(req.params.id, function (err, comment) {
         if (err) {
             console.log(err);
@@ -72,12 +75,12 @@ router.get('/:id/edit', isLoggedIn, function (req, res) {
 // update route
 //todo: body needs to be defind, redirect should be fixed
 router.put('/:id', function (req, res) {
-    // req.body.comment.body = req.sanitize(req.body.comment.body);
+    req.body.comment.body = req.sanitize(req.body.comment.body);
     comment.findByIdAndUpdate(req.params.id, req.body.comment, function (err, comment) {
         if (err) {
             console.log(err);
         } else {
-            res.redirect('/pizzeria');
+            res.redirect('/pizzeria/' + comment.pizzeria);
         }
     })
 });
