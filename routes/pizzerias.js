@@ -28,7 +28,7 @@ router.get('/new', isLoggedIn, function (req, res) {
 });
 //=================================================================
 
-//create
+// create route
 router.post('/', isLoggedIn, function (req, res) {
     let newPizzeria = {
         name: req.body.pizzeria.name,
@@ -51,7 +51,7 @@ router.post('/', isLoggedIn, function (req, res) {
             pizzeria.author.username = req.user.username;
         }
     });
-    res.redirect('/')
+    res.redirect('/pizzeria')
 });
 //============================================================
 
@@ -84,7 +84,7 @@ router.get('/:id/edit', isLoggedIn, function (req, res) {
 // update route
 router.put('/:id', function (req, res) {
     req.body.pizzeria.body = req.sanitize(req.body.pizzeria.body);
-    pizzeria.findByIdAndUpdate(req.params.id, req.body.pizzeria, function (err, blog) {
+    pizzeria.findByIdAndUpdate(req.params.id, req.body.pizzeria, function (err, pizzeria) {
         if (err) {
             console.log(err);
         } else {
