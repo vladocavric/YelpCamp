@@ -26,8 +26,8 @@
             <div class="d-flex justify-content-between">
 
                 <p class="mb-3"><em>Submited by <b><%= pizza.author.username %></b></em></p>
-                <% if (!user) {%>
-                <%} else if (user.id == pizza.author.id) { %>
+
+                <% if (user && user.id == pizza.author.id) { %>
                     <div class="d-flex">
                         <form action="/pizzeria/<%= pizza._id %>?_method=DELETE" method="post"
                         ">
@@ -162,14 +162,16 @@
                                 <% } %>
                             </span>
                         </div>
-                        <% if (!user) {%>
-                        <%} else if (user.id == comment.author.id) { %>
-                        <div class="d-flex justify-content-end">
-                            <form action="/pizzeria/<%= pizza._id %>/comments/<%= comment._id %>?_method=DELETE" method="post">
-                                <button class="btn btn-danger mx-2">Delete comment</button>
-                            </form>
-                            <a href="/pizzeria/<%= pizza._id %>/comments/<%= comment._id %>/edit" class="btn btn-primary">Edit comment</a>
-                        </div>
+
+                        <% if (user && user.id == comment.author.id) { %>
+                            <div class="d-flex justify-content-end">
+                                <form action="/pizzeria/<%= pizza._id %>/comments/<%= comment._id %>?_method=DELETE"
+                                      method="post">
+                                    <button class="btn btn-danger mx-2">Delete comment</button>
+                                </form>
+                                <a href="/pizzeria/<%= pizza._id %>/comments/<%= comment._id %>/edit"
+                                   class="btn btn-primary">Edit comment</a>
+                            </div>
                         <% } %>
                     </div>
                 <% }); %>
