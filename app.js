@@ -8,6 +8,8 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local');
 const passportLocalMongoose = require('passport-local-mongoose');
 const expressSession = require('express-session');
+const methodOverride = require('method-override');
+const expressSanitizer = require('express-sanitizer');
 // const pizzeria = require('./models/pizzeria');
 // const comment = require('./models/comment');
 const User = require('./models/user');
@@ -34,6 +36,8 @@ app.use(expressSession({
 app.use(express.static('themes'));
 app.use(express.urlencoded({extended: true}));
 app.set('view engine', 'ejs');
+app.use(methodOverride('_method'));
+app.use(expressSanitizer());
 
 app.use(passport.initialize());
 app.use(passport.session());

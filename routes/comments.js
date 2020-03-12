@@ -3,11 +3,11 @@ const router = express.Router({mergeParams: true});
 const pizzeria = require('../models/pizzeria');
 const comment = require('../models/comment');
 const User = require('../models/user');
-const methodOverride = require('method-override');
-const expressSanitizer = require('express-sanitizer');
+// const methodOverride = require('method-override');
+// const expressSanitizer = require('express-sanitizer');
 //=======================================================================
-router.use(methodOverride('_method'));
-router.use(expressSanitizer());
+// router.use(methodOverride('_method'));
+// router.use(expressSanitizer());
 //=======================================================================
 
 // new route
