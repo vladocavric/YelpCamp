@@ -9,7 +9,7 @@ const User = require('../models/user');
 
 //root route (home)
 router.get('/', function (req, res) {
-    res.render('Home')
+    res.redirect('/pizzeria')
 });
 
 // register route
@@ -50,11 +50,11 @@ router.get('/log-out', function (req, res) {
     res.redirect('/')
 });
 
-function isLoggedIn(req, res, next) {
-    if (req.isAuthenticated()) {
-        return next();
-    }
-    res.redirect('/log-in')
-}
+// function isLoggedIn(req, res, next) {
+//     if (req.isAuthenticated()) {
+//         return next();
+//     }
+//     res.redirect('/log-in')
+// }
 
 module.exports = router;

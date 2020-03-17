@@ -29,9 +29,8 @@
 
                 <% if (user && user.id == pizza.author.id) { %>
                     <div class="d-flex">
-                        <form action="/pizzeria/<%= pizza._id %>?_method=DELETE" method="post"
-                        ">
-                        <button class="btn btn-danger mx-2">Delete</button>
+                        <form action="/pizzeria/<%= pizza._id %>?_method=DELETE" method="post">
+                            <button class="btn btn-danger mx-2">Delete</button>
                         </form>
                         <a href="/pizzeria/<%= pizza._id %>/edit" class="btn btn-primary">Edit</a>
                     </div>
@@ -129,7 +128,7 @@
                 <% if (user){ %>
                     <a href="/pizzeria/<%= pizza._id %>/comments/new" class="btn btn-success">Leave a Review</a>
                 <% } %>
-                <a href="/pizzeria" class="btn btn-warning">go back</a>
+                    <a href="/pizzeria" class="btn btn-warning">go back</a>
             </div>
             <div class="bg-light my-3 border border-warning rounded">
                 <% pizza.comments.reverse().forEach(comment => { %>
@@ -163,7 +162,8 @@
                             </span>
                         </div>
 
-                        <% if (user && user.id == comment.author.id) { %>
+                        <%# if (user && user.id == comment.author.id) { %>
+                        <% if (user && comment.author.id.equals(user._id)) { %>
                             <div class="d-flex justify-content-end">
                                 <form action="/pizzeria/<%= pizza._id %>/comments/<%= comment._id %>?_method=DELETE"
                                       method="post">

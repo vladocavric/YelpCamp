@@ -47,7 +47,6 @@ router.post('/', isLoggedIn, function (req, res) {
 
                     // user.comments.push(comment);
                     comment.save();
-                    console.log(comment)
                     res.redirect('/pizzeria/' + req.params.id)
                 }
                 // })
@@ -59,14 +58,18 @@ router.post('/', isLoggedIn, function (req, res) {
 //=================================================================
 
 // edit route
-router.get('/:id/edit', isLoggedIn, function (req, res) {
+router.get('/:comment_id/edit', isCommentOwner, function (req, res) {
     // console.log(req.body.comment);
-    comment.findById(req.params.id, function (err, comment) {
+    comment.findById(req.params.comment_id, function (err, comment) {
         if (err) {
             console.log(err);
+            res.redirect('back')
         } else {
             // console.log(foundPizza)
-            res.render('comments/edit', {pizzeria: pizzeria, comment: comment})
+            res.render('comments/edit', {pizzeria: pizzeria, comment: comment});
+            //     console.log(comment.author.id);
+            //     console.log('=========================================')
+            //     console.log(req.user.id);
         }
     })
 });
@@ -74,28 +77,31 @@ router.get('/:id/edit', isLoggedIn, function (req, res) {
 
 // update route
 //todo: body needs to be defind, redirect should be fixed
-router.put('/:id', function (req, res) {
-    req.body.comment.body = req.sanitize(req.body.comment.body);
-    comment.findByIdAndUpdate(req.params.id, req.body.comment, function (err, comment) {
+router.put('/:comment_id', isCommentOwner, function (req, res) {
+    // req.body.comment.body = req.sanitize(req.body.comment.body);
+    comment.findByIdAndUpdate(req.params.comment_id, req.body.comment, function (err, comment) {
         if (err) {
             console.log(err);
+            res.redirect('back')
         } else {
-            res.redirect('/pizzeria/' + comment.pizzeria);
+            res.redirect('/pizzeria/' + req.params.id);
         }
     })
 });
 //=================================================================
 
 // destroy route
-router.delete('/:id', function (req, res) {
-    comment.findByIdAndDelete(req.params.id, function (err) {
+router.delete('/:comment_id', isCommentOwner, function (req, res) {
+    comment.findByIdAndDelete(req.params.comment_id, function (err) {
         if (err) {
-            console.log(err)
+            console.log(err);
+            res.redirect('back');
         } else {
             res.redirect('back');
         }
     })
 });
+
 //=================================================================
 
 function isLoggedIn(req, res, next) {
@@ -103,6 +109,24 @@ function isLoggedIn(req, res, next) {
         return next();
     }
     res.redirect('/log-in')
+}
+
+function isCommentOwner(req, res, next) {
+    if (req.isAuthenticated()) {
+        comment.findById(req.params.comment_id, function (err, comment) {
+            if (err) {
+                res.redirect('back');
+            } else {
+                if (comment.author.id.equals(req.user._id)) {
+                    next()
+                } else {
+                    res.redirect('back');
+                }
+            }
+        });
+    } else {
+        res.redirect('/log-in');
+    }
 }
 
 module.exports = router;

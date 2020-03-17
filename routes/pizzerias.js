@@ -69,39 +69,27 @@ router.get('/:id', function (req, res) {
 //===============================================================================================
 
 // edit route
-router.get('/:id/edit', isLoggedIn, function (req, res) {
+router.get('/:id/edit', isPizzeriaOwner, function (req, res) {
     pizzeria.findById(req.params.id, function (err, pizza) {
-        if (err) {
-            console.log(err);
-        } else {
-            // console.log(foundPizza)
-            res.render('pizzerias/edit', {pizza: pizza})
-        }
-    })
+        res.render('pizzerias/edit', {pizza: pizza})
+    });
 });
 //===============================================================================================
 
 // update route
-router.put('/:id', function (req, res) {
-    req.body.pizzeria.body = req.sanitize(req.body.pizzeria.body);
+router.put('/:id', isPizzeriaOwner, function (req, res) {
+    // TODO: define what needs to be sanitized (body was for blog's)
+    // req.body.pizzeria.body = req.sanitize(req.body.pizzeria.body);
     pizzeria.findByIdAndUpdate(req.params.id, req.body.pizzeria, function (err, pizzeria) {
-        if (err) {
-            console.log(err);
-        } else {
-            res.redirect('/pizzeria/' + req.params.id);
-        }
+        res.redirect('/pizzeria/' + req.params.id);
     })
 });
 //===============================================================================================
 
 // destroy route
-router.delete('/:id', function (req, res) {
+router.delete('/:id', isPizzeriaOwner, function (req, res) {
     pizzeria.findByIdAndDelete(req.params.id, function (err) {
-        if (err) {
-            console.log(err)
-        } else {
-            res.redirect('/pizzeria');
-        }
+        res.redirect('/pizzeria');
     })
 });
 
@@ -112,6 +100,24 @@ function isLoggedIn(req, res, next) {
         return next();
     }
     res.redirect('/log-in')
+}
+
+function isPizzeriaOwner(req, res, next) {
+    if (req.isAuthenticated()) {
+        pizzeria.findById(req.params.id, function (err, pizzeria) {
+            if (err) {
+                res.redirect('back');
+            } else {
+                if (pizzeria.author.id.equals(req.user._id)) {
+                    next()
+                } else {
+                    res.redirect('back');
+                }
+            }
+        });
+    } else {
+        res.redirect('/log-in');
+    }
 }
 
 module.exports = router;
