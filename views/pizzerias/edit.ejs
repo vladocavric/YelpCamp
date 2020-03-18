@@ -14,7 +14,7 @@
                placeholder="site url" value="<%= pizza.site %>">
         <input class="col-12 mb-3 p-3 form-control-lg" type="text" name="pizzeria[map]" id="map" placeholder="map url"
                value="<%= pizza.map %>">
-        <input class="col-12 mb-3 p-3 form-control-lg" type="number" step="any" name="pizzeria[price]" id="price"
+        <input class="col-12 mb-3 p-3 form-control-lg" type="number" step="0.01" name="pizzeria[price]" id="price"
                placeholder="Price" value="<%= pizza.price %>">
         <textarea class="col-12 mb-3 p-3 form-control-lg h-100 " name="pizzeria[description]"
                   placeholder="description"><%= pizza.description %></textarea>

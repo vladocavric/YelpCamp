@@ -4,6 +4,7 @@ const pizzeria = require('../models/pizzeria');
 const User = require('../models/user');
 const methodOverride = require('method-override');
 const expressSanitizer = require('express-sanitizer');
+const middlewareObject = require('../middleware');
 //=================================================================
 router.use(methodOverride('_method'));
 router.use(expressSanitizer());
@@ -23,13 +24,13 @@ router.get('/', function (req, res) {
 //===============================================================
 
 // new route
-router.get('/new', isLoggedIn, function (req, res) {
+router.get('/new', middlewareObject.isLoggedIn, function (req, res) {
     res.render('pizzerias/new')
 });
 //=================================================================
 
 // create route
-router.post('/', isLoggedIn, function (req, res) {
+router.post('/', middlewareObject.isLoggedIn, function (req, res) {
     let newPizzeria = {
         name: req.body.pizzeria.name,
         img: req.body.pizzeria.img,
@@ -69,15 +70,16 @@ router.get('/:id', function (req, res) {
 //===============================================================================================
 
 // edit route
-router.get('/:id/edit', isPizzeriaOwner, function (req, res) {
+router.get('/:id/edit', middlewareObject.isPizzeriaOwner, function (req, res) {
     pizzeria.findById(req.params.id, function (err, pizza) {
+
         res.render('pizzerias/edit', {pizza: pizza})
     });
 });
 //===============================================================================================
 
 // update route
-router.put('/:id', isPizzeriaOwner, function (req, res) {
+router.put('/:id', middlewareObject.isPizzeriaOwner, function (req, res) {
     // TODO: define what needs to be sanitized (body was for blog's)
     // req.body.pizzeria.body = req.sanitize(req.body.pizzeria.body);
     pizzeria.findByIdAndUpdate(req.params.id, req.body.pizzeria, function (err, pizzeria) {
@@ -87,7 +89,7 @@ router.put('/:id', isPizzeriaOwner, function (req, res) {
 //===============================================================================================
 
 // destroy route
-router.delete('/:id', isPizzeriaOwner, function (req, res) {
+router.delete('/:id', middlewareObject.isPizzeriaOwner, function (req, res) {
     pizzeria.findByIdAndDelete(req.params.id, function (err) {
         res.redirect('/pizzeria');
     })
@@ -95,29 +97,6 @@ router.delete('/:id', isPizzeriaOwner, function (req, res) {
 
 //===============================================================================================
 
-function isLoggedIn(req, res, next) {
-    if (req.isAuthenticated()) {
-        return next();
-    }
-    res.redirect('/log-in')
-}
 
-function isPizzeriaOwner(req, res, next) {
-    if (req.isAuthenticated()) {
-        pizzeria.findById(req.params.id, function (err, pizzeria) {
-            if (err) {
-                res.redirect('back');
-            } else {
-                if (pizzeria.author.id.equals(req.user._id)) {
-                    next()
-                } else {
-                    res.redirect('back');
-                }
-            }
-        });
-    } else {
-        res.redirect('/log-in');
-    }
-}
 
 module.exports = router;
